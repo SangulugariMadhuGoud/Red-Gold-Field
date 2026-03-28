@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { ShieldCheck, Loader2 } from "lucide-react";
+import { authAPI } from "@/api/auth";
 
 export default function VerifyOtp() {
   const location = useLocation();
@@ -22,22 +22,34 @@ export default function VerifyOtp() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.verifyOtp({ phone, token: otp, type: "sms" });
-    setLoading(false);
-    if (error) {
-      toast({ title: "Verification failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Phone verified!", description: "Welcome to Red Gold Fields" });
+    try {
+      await authAPI.verifyOTP(phone, otp);
+      toast({
+        title: "Phone verified!",
+        description: "Welcome to Red Gold Fields",
+      });
       navigate("/shop");
+    } catch (error) {
+      toast({
+        title: "Verification failed",
+        description: error.response?.data?.message || "Invalid OTP",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleResend = async () => {
-    const { error } = await supabase.auth.resend({ phone, type: "sms" });
-    if (error) {
-      toast({ title: "Could not resend", description: error.message, variant: "destructive" });
-    } else {
+    try {
+      await authAPI.sendOTP(phone);
       toast({ title: "OTP resent!" });
+    } catch (error) {
+      toast({
+        title: "Could not resend",
+        description: error.response?.data?.message || "Failed to send OTP",
+        variant: "destructive",
+      });
     }
   };
 
@@ -49,7 +61,9 @@ export default function VerifyOtp() {
           <div className="w-16 h-16 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center mx-auto mb-6">
             <ShieldCheck className="w-8 h-8 text-gold" />
           </div>
-          <h1 className="font-serif text-3xl text-foreground mb-2">Verify Your Phone</h1>
+          <h1 className="font-serif text-3xl text-foreground mb-2">
+            Verify Your Phone
+          </h1>
           <p className="text-muted-foreground text-sm mb-2">
             We sent a 6-digit code to
           </p>
@@ -64,8 +78,16 @@ export default function VerifyOtp() {
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
               className="text-center text-2xl tracking-[0.5em] bg-background border-border/60"
             />
-            <Button type="submit" disabled={loading} className="w-full bg-gradient-gold text-forest font-semibold hover:shadow-gold">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Verify & Continue"}
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-gold text-forest font-semibold hover:shadow-gold"
+            >
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Verify & Continue"
+              )}
             </Button>
           </form>
           <button

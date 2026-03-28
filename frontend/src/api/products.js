@@ -1,6 +1,6 @@
-import api from './client';
+import api from "./client";
 
 export const productsAPI = {
-  getAll: () => api.get('/products'),
-  getById: (id) => api.get(`/products/${id}`),
+  getAll: () => api.get("/products"),
+  getProduct: (id) => api.get(`/products/${id}`),
 };

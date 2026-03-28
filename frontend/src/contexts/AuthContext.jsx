@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../api/auth';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { authAPI } from "../api/auth";
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -16,15 +16,17 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
       // Verify token and get user
-      authAPI.getCurrentUser()
-        .then(response => {
+      authAPI
+        .getCurrentUser()
+        .then((response) => {
           setUser(response.data);
         })
         .catch(() => {
-          localStorage.removeItem('token');
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
         })
         .finally(() => {
           setLoading(false);
@@ -36,22 +38,25 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const response = await authAPI.login(email, password);
-    const { token, user: userData } = response.data;
-    localStorage.setItem('token', token);
+    const { accessToken, refreshToken, user: userData } = response.data;
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
     setUser(userData);
     return userData;
   };
 
   const register = async (email, password, fullName, phone) => {
     const response = await authAPI.register(email, password, fullName, phone);
-    const { token, user: userData } = response.data;
-    localStorage.setItem('token', token);
+    const { accessToken, refreshToken, user: userData } = response.data;
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
     setUser(userData);
     return userData;
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setUser(null);
   };
 
@@ -63,9 +68,5 @@ export const AuthProvider = ({ children }) => {
     loading,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

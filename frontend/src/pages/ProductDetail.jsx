@@ -7,8 +7,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Shield, Star, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { productsAPI } from "@/api/products";
 import productPowder from "@/assets/product-powder.jpg";
 import productOil from "@/assets/product-oil.jpg";
 import productWood from "@/assets/product-wood.jpg";
@@ -27,9 +27,8 @@ export default function ShopProductDetail() {
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("products").select("*").eq("slug", id).single();
-      if (error) throw error;
-      return data;
+      const response = await productsAPI.getProduct(id);
+      return response.data;
     },
   });
 
