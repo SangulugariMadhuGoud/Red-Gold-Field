@@ -1,3 +1,4 @@
+// Product model - defines the database schema for product data
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({

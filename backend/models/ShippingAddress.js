@@ -1,3 +1,4 @@
+// ShippingAddress model - defines the database schema for user shipping addresses
 const mongoose = require('mongoose');
 
 const shippingAddressSchema = new mongoose.Schema({

@@ -1,3 +1,4 @@
+// OrderItem model - defines the database schema for individual order items
 const mongoose = require('mongoose');
 
 const orderItemSchema = new mongoose.Schema({

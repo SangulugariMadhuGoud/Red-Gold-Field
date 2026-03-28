@@ -1,3 +1,4 @@
+// Project model - defines the database schema for investment projects
 const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema({

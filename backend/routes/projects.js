@@ -1,3 +1,4 @@
+// Project routes - defines API endpoints for project management
 const express = require('express');
 const mongoose = require('mongoose');
 const Project = require('../models/Project');

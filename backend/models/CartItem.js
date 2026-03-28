@@ -1,3 +1,4 @@
+// CartItem model - defines the database schema for shopping cart items
 const mongoose = require('mongoose');
 
 const cartItemSchema = new mongoose.Schema({

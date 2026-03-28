@@ -1,3 +1,4 @@
+// Order model - defines the database schema for customer orders
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
