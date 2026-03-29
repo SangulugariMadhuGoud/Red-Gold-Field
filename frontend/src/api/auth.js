@@ -1,11 +1,18 @@
 import api from "./client";
 
 export const authAPI = {
-  login: (email, password) => api.post("/auth/login", { email, password }),
-  register: (email, password, fullName, phone) =>
-    api.post("/auth/register", { email, password, fullName, phone }),
+  login: (data) => api.post("/auth/login", data),
+
+  register: (data) => api.post("/auth/register", data),
+
   getCurrentUser: () => api.get("/auth/me"),
-  refreshToken: (refreshToken) => api.post("/auth/refresh", { refreshToken }),
-  sendOTP: (phone) => api.post("/auth/send-otp", { phone }),
-  verifyOTP: (phone, otp) => api.post("/auth/verify-otp", { phone, otp }),
+
+  refreshToken: () => api.get("/auth/refresh"),
+
+  logout: () => api.post("/auth/logout"),
+
+  sendOtp: (phone) => api.post("/auth/send-otp", { phone }),
+
+  verifyOtp: (phone, otp) =>
+    api.post("/auth/verify-otp", { phone, otp }),
 };

@@ -11,7 +11,7 @@ export default function SiteVisit() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", email: "", project: "", date: "", message: "" });
 
-  const handleSubmit = (e) => {
+  const   handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
