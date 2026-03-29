@@ -2,15 +2,45 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { FadeUp } from "@/components/SectionHeading";
-import { MapPin, Phone, Mail, MessageCircle, Send, CheckCircle2 } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  MessageCircle,
+  Send,
+  CheckCircle2,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
+import api from "../api/client";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
 
-  const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    try {
+      await api.post("/public/contact", form);
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Failed to send message"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -20,12 +50,15 @@ export default function Contact() {
       <div className="pt-32 pb-16 bg-earth">
         <div className="container mx-auto px-6">
           <FadeUp>
-            <span className="text-gold text-xs tracking-widest uppercase">Reach Out</span>
+            <span className="text-gold text-xs tracking-widest uppercase">
+              Reach Out
+            </span>
             <h1 className="font-serif text-5xl md:text-6xl text-foreground mt-3 mb-4">
               Connect <em className="text-gold italic">With Us</em>
             </h1>
             <p className="text-muted-foreground text-lg max-w-xl">
-              Our team can explain projects, arrange site visits, and share all documentation. No pressure. No commitment required.
+              Our team can explain projects, arrange site visits, and share all
+              documentation. No pressure. No commitment required.
             </p>
           </FadeUp>
         </div>
@@ -37,13 +70,22 @@ export default function Contact() {
             {/* Contact Info */}
             <div className="lg:col-span-2 space-y-6">
               <FadeUp>
-                <h2 className="font-serif text-2xl text-foreground mb-6">Get In Touch</h2>
+                <h2 className="font-serif text-2xl text-foreground mb-6">
+                  Get In Touch
+                </h2>
                 {[
-                  { icon: MapPin, label: "Location", val: "Andhra Pradesh, India" },
+                  {
+                    icon: MapPin,
+                    label: "Location",
+                    val: "Andhra Pradesh, India",
+                  },
                   { icon: Phone, label: "Phone", val: "+91 XXXXX XXXXX" },
                   { icon: Mail, label: "Email", val: "info@redgoldfields.com" },
                 ].map((c) => (
-                  <div key={c.label} className="flex items-start gap-4 bg-gradient-card border border-border/40 rounded-xl p-4">
+                  <div
+                    key={c.label}
+                    className="flex items-start gap-4 bg-gradient-card border border-border/40 rounded-xl p-4"
+                  >
                     <div className="w-9 h-9 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
                       <c.icon className="w-4 h-4 text-gold" />
                     </div>
@@ -75,60 +117,116 @@ export default function Contact() {
                     <div className="w-14 h-14 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto mb-4">
                       <CheckCircle2 className="w-7 h-7 text-gold" />
                     </div>
-                    <h3 className="font-serif text-2xl text-foreground mb-2">Message Received</h3>
-                    <p className="text-muted-foreground">Our team will reach out within 24 hours.</p>
+                    <h3 className="font-serif text-2xl text-foreground mb-2">
+                      Message Received
+                    </h3>
+                    <p className="text-muted-foreground">
+                      Our team will reach out within 24 hours.
+                    </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="bg-gradient-card border border-border/40 rounded-2xl p-8 space-y-5">
-                    <h3 className="font-serif text-xl text-foreground mb-6">Send Us a Message</h3>
+                  <form
+                    onSubmit={handleSubmit}
+                    className="bg-gradient-card border border-border/40 rounded-2xl p-8 space-y-5"
+                  >
+                    <h3 className="font-serif text-xl text-foreground mb-6">
+                      Send Us a Message
+                    </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       {[
-                        { id: "name", label: "Full Name", type: "text", placeholder: "Your name" },
-                        { id: "phone", label: "Phone Number", type: "tel", placeholder: "+91 XXXXX XXXXX" },
+                        {
+                          id: "name",
+                          label: "Full Name",
+                          type: "text",
+                          placeholder: "Your name",
+                        },
+                        {
+                          id: "phone",
+                          label: "Phone Number",
+                          type: "tel",
+                          placeholder: "+91 XXXXX XXXXX",
+                        },
                       ].map((f) => (
                         <div key={f.id}>
-                          <label htmlFor={f.id} className="block text-sm text-muted-foreground mb-1.5">{f.label}</label>
+                          <label
+                            htmlFor={f.id}
+                            className="block text-sm text-muted-foreground mb-1.5"
+                          >
+                            {f.label}
+                          </label>
                           <input
                             id={f.id}
                             type={f.type}
                             placeholder={f.placeholder}
                             required
                             value={form[f.id]}
-                            onChange={(e) => setForm({ ...form, [f.id]: e.target.value })}
+                            onChange={(e) =>
+                              setForm({ ...form, [f.id]: e.target.value })
+                            }
                             className="w-full bg-muted/50 border border-border rounded-xl px-4 py-2.5 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all"
                           />
                         </div>
                       ))}
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm text-muted-foreground mb-1.5">Email Address</label>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm text-muted-foreground mb-1.5"
+                      >
+                        Email Address
+                      </label>
                       <input
                         id="email"
                         type="email"
                         placeholder="your@email.com"
                         required
                         value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        onChange={(e) =>
+                          setForm({ ...form, email: e.target.value })
+                        }
                         className="w-full bg-muted/50 border border-border rounded-xl px-4 py-2.5 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-gold/50 transition-all"
                       />
                     </div>
                     <div>
-                      <label htmlFor="message" className="block text-sm text-muted-foreground mb-1.5">Message</label>
+                      <label
+                        htmlFor="message"
+                        className="block text-sm text-muted-foreground mb-1.5"
+                      >
+                        Message
+                      </label>
                       <textarea
                         id="message"
                         rows={4}
                         placeholder="Tell us what you're looking for..."
                         value={form.message}
-                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        onChange={(e) =>
+                          setForm({ ...form, message: e.target.value })
+                        }
                         className="w-full bg-muted/50 border border-border rounded-xl px-4 py-2.5 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-gold/50 transition-all resize-none"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-gradient-gold text-forest font-semibold hover:shadow-gold transition-all duration-300"
+                      disabled={loading}
+                      className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-gradient-gold text-forest font-semibold hover:shadow-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Send className="w-4 h-4" /> Send Message
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />{" "}
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" /> Send Message
+                        </>
+                      )}
                     </button>
+                    {error && (
+                      <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
+                        <AlertCircle className="w-4 h-4" />
+                        {error}
+                      </div>
+                    )}
                   </form>
                 )}
               </FadeUp>

@@ -1,8 +1,8 @@
-import api from './client';
+import api from "./client";
 
 export const ordersAPI = {
-  getOrders: () => api.get('/orders'),
+  getOrders: () => api.get("/user/orders"),
   createOrder: (shippingAddress, paymentMethod) =>
-    api.post('/orders', { shippingAddress, paymentMethod }),
-  getOrder: (id) => api.get(`/orders/${id}`),
+    api.post("/user/orders", { shippingAddress, paymentMethod }),
+  getOrder: (id) => api.get(`/user/orders/${id}`),
 };

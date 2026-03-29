@@ -1,10 +1,11 @@
-import api from './client';
+import api from "./client";
 
 export const profileAPI = {
-  getProfile: () => api.get('/profile'),
-  updateProfile: (data) => api.put('/profile', data),
-  getAddresses: () => api.get('/profile/addresses'),
-  addAddress: (address) => api.post('/profile/addresses', address),
-  updateAddress: (id, address) => api.put(`/profile/addresses/${id}`, address),
-  deleteAddress: (id) => api.delete(`/profile/addresses/${id}`),
+  getProfile: () => api.get("/user/profile"),
+  updateProfile: (data) => api.put("/user/profile", data),
+  getAddresses: () => api.get("/user/profile/addresses"),
+  addAddress: (address) => api.post("/user/profile/addresses", address),
+  updateAddress: (id, address) =>
+    api.put(`/user/profile/addresses/${id}`, address),
+  deleteAddress: (id) => api.delete(`/user/profile/addresses/${id}`),
 };

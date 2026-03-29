@@ -1,18 +1,18 @@
 import api from "./client";
 
 export const authAPI = {
-  login: (data) => api.post("/auth/login", data),
+  login: (data) => api.post("/public/auth/login", data),
 
-  register: (data) => api.post("/auth/register", data),
+  register: (data) => api.post("/public/auth/register", data),
 
-  getCurrentUser: () => api.get("/auth/me"),
+  getCurrentUser: () => api.get("/public/auth/me"),
 
-  refreshToken: () => api.get("/auth/refresh"),
+  refreshToken: () => api.get("/public/auth/refresh"),
 
-  logout: () => api.post("/auth/logout"),
+  logout: () => api.post("/public/auth/logout"),
 
-  sendOtp: (phone) => api.post("/auth/send-otp", { phone }),
+  sendOtp: (phone) => api.post("/public/auth/send-otp", { phone }),
 
   verifyOtp: (phone, otp) =>
-    api.post("/auth/verify-otp", { phone, otp }),
+    api.post("/public/auth/verify-otp", { phone, otp }),
 };

@@ -2,7 +2,7 @@ import api from './client';
 
 export const getProjects = async () => {
   try {
-    const response = await api.get('/projects');
+    const response = await api.get('public/projects');
     return response.data;
   } catch (error) {
     console.error('Error fetching projects:', error);
