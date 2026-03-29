@@ -7,6 +7,9 @@ const authController = {
   // Register
   register: async (req, res) => {
     const errors = validationResult(req);
+    // console.log(req.body);
+    // console.log(!errors.isEmpty());
+    
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -29,6 +32,9 @@ const authController = {
   // Login
   login: async (req, res) => {
     const errors = validationResult(req);
+    // console.log(!errors.isEmpty());
+    // console.log(req.body);
+    
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
