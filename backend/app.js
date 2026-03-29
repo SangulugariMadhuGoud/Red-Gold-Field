@@ -23,12 +23,35 @@ import projectRoutes from "./routes/projects.js";
 import cartRoutes from "./routes/cart.js";
 import orderRoutes from "./routes/orders.js";
 import profileRoutes from "./routes/profile.js";
+import contactRoutes from "./routes/contact.js";
+import siteVisitRoutes from "./routes/siteVisit.js";
+import adminContactRoutes from "./routes/adminContact.js";
+import adminSiteVisitRoutes from "./routes/adminSiteVisit.js";
+import adminProductRoutes from "./routes/adminProduct.js";
+import adminProjectRoutes from "./routes/adminProject.js";
+import adminOrderRoutes from "./routes/adminOrder.js";
 
-app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/profile", profileRoutes);
+// Middleware
+import isAdmin from "./middleware/isAdmin.js";
+import { auth } from "./middleware/auth.js";
+
+// Public routes
+app.use("/api/public/auth", authRoutes);
+app.use("/api/public/products", productRoutes);
+app.use("/api/public/projects", projectRoutes);
+app.use("/api/public/contact", contactRoutes);
+app.use("/api/public/site-visit", siteVisitRoutes);
+
+// User routes
+app.use("/api/user/cart", auth, cartRoutes);
+app.use("/api/user/orders", auth, orderRoutes);
+app.use("/api/user/profile", auth, profileRoutes);
+
+// Admin routes
+app.use("/api/admin/contacts", auth, isAdmin, adminContactRoutes);
+app.use("/api/admin/site-visits", auth, isAdmin, adminSiteVisitRoutes);
+app.use("/api/admin/products", auth, isAdmin, adminProductRoutes);
+app.use("/api/admin/projects", auth, isAdmin, adminProjectRoutes);
+app.use("/api/admin/orders", auth, isAdmin, adminOrderRoutes);
 
 export default app;

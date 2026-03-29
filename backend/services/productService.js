@@ -22,6 +22,22 @@ const productService = {
 
     return product;
   },
+
+  // Create new product
+  createProduct: async (data) => {
+    const product = new Product(data);
+    return await product.save();
+  },
+
+  // Update product
+  updateProduct: async (id, data) => {
+    return await Product.findByIdAndUpdate(id, data, { new: true });
+  },
+
+  // Delete product
+  deleteProduct: async (id) => {
+    return await Product.findByIdAndDelete(id);
+  },
 };
 
 export default productService;

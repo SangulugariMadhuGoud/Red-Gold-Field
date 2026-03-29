@@ -70,6 +70,22 @@ const projectService = {
 
     return project;
   },
+
+  // Create new project
+  createProject: async (data) => {
+    const project = new Project(data);
+    return await project.save();
+  },
+
+  // Update project
+  updateProject: async (slug, data) => {
+    return await Project.findOneAndUpdate({ slug }, data, { new: true });
+  },
+
+  // Delete project
+  deleteProject: async (slug) => {
+    return await Project.findOneAndDelete({ slug });
+  },
 };
 
 export default projectService;

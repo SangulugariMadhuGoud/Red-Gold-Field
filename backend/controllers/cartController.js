@@ -5,7 +5,7 @@ const cartController = {
   // Get cart items for user
   getCartItems: async (req, res) => {
     try {
-      const cartItems = await cartService.getCartItems(req.user.userId);
+      const cartItems = await cartService.getCartItems(req.user.id);
       res.json(cartItems);
     } catch (error) {
       res.status(500).json({ message: "Server error" });
@@ -18,12 +18,13 @@ const cartController = {
 
     try {
       const cartItem = await cartService.addToCart(
-        req.user.userId,
+        req.user.id,
         productId,
         quantity,
       );
       res.json(cartItem);
     } catch (error) {
+      console.error("Error adding to cart:", error);
       res.status(error.status || 500).json({ message: error.message });
     }
   },
@@ -34,7 +35,7 @@ const cartController = {
 
     try {
       const cartItem = await cartService.updateCartItem(
-        req.user.userId,
+        req.user.id,
         req.params.id,
         quantity,
       );
@@ -47,7 +48,7 @@ const cartController = {
   // Remove item from cart
   removeFromCart: async (req, res) => {
     try {
-      await cartService.removeFromCart(req.user.userId, req.params.id);
+      await cartService.removeFromCart(req.user.id, req.params.id);
       res.json({ message: "Item removed from cart" });
     } catch (error) {
       res.status(error.status || 500).json({ message: error.message });

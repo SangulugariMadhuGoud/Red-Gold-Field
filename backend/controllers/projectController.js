@@ -34,6 +34,45 @@ const projectController = {
       res.status(500).json({ message: "Server error" });
     }
   },
+
+  // Create new project (admin)
+  createProject: async (req, res) => {
+    try {
+      const project = await projectService.createProject(req.body);
+      res.status(201).json(project);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+
+  // Update project (admin)
+  updateProject: async (req, res) => {
+    try {
+      const project = await projectService.updateProject(
+        req.params.slug,
+        req.body,
+      );
+      if (!project) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+      res.json(project);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+
+  // Delete project (admin)
+  deleteProject: async (req, res) => {
+    try {
+      const project = await projectService.deleteProject(req.params.slug);
+      if (!project) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+      res.json({ message: "Project deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
 };
 
 export default projectController;

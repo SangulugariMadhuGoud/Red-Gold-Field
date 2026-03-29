@@ -74,6 +74,18 @@ const orderService = {
     const orderItems = await OrderItem.find({ orderId: order._id });
     return { order, items: orderItems };
   },
+
+  // Get all orders (admin)
+  getAllOrders: async () => {
+    return await Order.find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "name email");
+  },
+
+  // Update order status (admin)
+  updateOrderStatus: async (orderId, status) => {
+    return await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+  },
 };
 
 export default orderService;
