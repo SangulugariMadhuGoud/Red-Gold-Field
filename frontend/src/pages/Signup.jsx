@@ -19,18 +19,41 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
     if (!name || !email || !password) return;
+
     if (password.length < 6) {
-      toast({ title: "Password too short", description: "Minimum 6 characters", variant: "destructive" });
+      toast({
+        title: "Password too short",
+        description: "Minimum 6 characters",
+        variant: "destructive",
+      });
       return;
     }
+
     setLoading(true);
+
     try {
-      await register(email, password, name, phone);
-      toast({ title: "Account created!", description: "Welcome to RGF!" });
+      await register({
+        email,
+        password,
+        fullName: name,
+        phone,
+      });
+
+      toast({
+        title: "Account created!",
+        description: "Welcome to RGF!",
+      });
+
       navigate("/shop");
     } catch (error) {
-      toast({ title: "Signup failed", description: error.response?.data?.message || "An error occurred", variant: "destructive" });
+      toast({
+        title: "Signup failed",
+        description:
+          error.response?.data?.message || "An error occurred",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
