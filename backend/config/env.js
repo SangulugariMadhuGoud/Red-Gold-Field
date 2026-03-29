@@ -1,13 +1,23 @@
-import { configDotenv } from "dotenv";
+import dotenv from "dotenv";
 
-// Load environment variables from .env file
-configDotenv();
+dotenv.config();
 
-module.exports = {
-  PORT: process.env.PORT || 5002,
-  MONGODB_URI: process.env.MONGODB_URI || "mongodb://localhost:27017/rgf",
-  JWT_SECRET: process.env.JWT_SECRET || "your-super-secret-jwt-key-change-this-in-production",
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || "your-super-secret-refresh-jwt-key-change-this-in-production",
-  JWT_EXPIRE: process.env.JWT_EXPIRE || "15m",
+// 🔥 Fail fast if critical env vars missing
+if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
+  throw new Error("JWT secrets are missing in environment variables");
+}
+
+const env = {
+  PORT: process.env.PORT || 5000,
+
+  MONGODB_URI:
+    process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/rgf",
+
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+
+  JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || "15m",
   JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "7d",
-};     
+};
+
+export default Object.freeze(env);

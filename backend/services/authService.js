@@ -1,22 +1,24 @@
 // Authentication service - contains business logic for user authentication
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import env from "../config/env.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+
 
 const authService = {
   // Generate access token
   generateAccessToken: (user) => {
     return jwt.sign(
       { userId: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE || "15m" },
+      env.JWT_SECRET,
+      { expiresIn: env.JWT_EXPIRE || "15m" },
     );
   },
 
   // Generate refresh token
   generateRefreshToken: (user) => {
-    return jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, {
-      expiresIn: process.env.JWT_REFRESH_EXPIRE || "7d",
+    return jwt.sign({ userId: user._id }, env.JWT_REFRESH_SECRET, {
+      expiresIn: env.JWT_REFRESH_EXPIRE || "7d",
     });
   },
 
@@ -135,4 +137,4 @@ const authService = {
   },
 };
 
-module.exports = authService;
+export default authService;

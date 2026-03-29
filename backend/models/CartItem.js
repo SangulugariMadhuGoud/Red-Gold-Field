@@ -1,15 +1,15 @@
 // CartItem model - defines the database schema for shopping cart items
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const cartItemSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   productId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
+    ref: "Product",
     required: true,
   },
   quantity: {
@@ -26,4 +26,4 @@ const cartItemSchema = new mongoose.Schema({
 // Ensure unique user-product combination
 cartItemSchema.index({ userId: 1, productId: 1 }, { unique: true });
 
-module.exports = mongoose.model('CartItem', cartItemSchema);
+export default mongoose.model("CartItem", cartItemSchema);

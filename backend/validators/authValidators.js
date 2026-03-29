@@ -1,5 +1,5 @@
 // Validation rules for authentication endpoints
-const { body } = require("express-validator");
+import { body } from "express-validator";
 
 const authValidators = {
   register: [
@@ -18,4 +18,4 @@ const authValidators = {
   ],
 };
 
-module.exports = authValidators;
+export default authValidators;

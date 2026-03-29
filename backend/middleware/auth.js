@@ -1,5 +1,6 @@
 // Authentication middleware - handles JWT token verification and role-based access
-const jwt = require("jsonwebtoken");
+import env from "../config/env.js";
+import jwt from "jsonwebtoken";
 
 const auth = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -10,7 +11,7 @@ const auth = (req, res, next) => {
   try {
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "your-secret-key",
+      env.JWT_SECRET || "your-secret-key",
     );
     req.user = decoded;
     next();
@@ -30,4 +31,4 @@ const requireRole = (role) => {
 
 const requireAuth = auth;
 
-module.exports = { auth, requireRole, requireAuth: auth };
+export { auth, requireRole, requireAuth };

@@ -1,10 +1,10 @@
 // ShippingAddress model - defines the database schema for user shipping addresses
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const shippingAddressSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   fullName: {
@@ -44,4 +44,4 @@ const shippingAddressSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('ShippingAddress', shippingAddressSchema);
+export default mongoose.model("ShippingAddress", shippingAddressSchema);

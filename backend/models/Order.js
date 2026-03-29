@@ -1,16 +1,16 @@
 // Order model - defines the database schema for customer orders
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   status: {
     type: String,
     required: true,
-    default: 'pending',
+    default: "pending",
   },
   total: {
     type: Number,
@@ -22,7 +22,7 @@ const orderSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    default: 'cod',
+    default: "cod",
   },
   createdAt: {
     type: Date,
@@ -30,4 +30,4 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Order', orderSchema);
+export default mongoose.model("Order", orderSchema);

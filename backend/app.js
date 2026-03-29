@@ -1,8 +1,8 @@
 // Express app setup - configures middleware, routes, and database connection
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const connectDB = require('./config/database');
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/database.js";
 
 dotenv.config();
 
@@ -17,11 +17,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/products', require('./routes/products'));
-app.use('/api/projects', require('./routes/projects'));
-app.use('/api/cart', require('./routes/cart'));
-app.use('/api/orders', require('./routes/orders'));
-app.use('/api/profile', require('./routes/profile'));
+import authRoutes from "./routes/auth.js";
+import productRoutes from "./routes/products.js";
+import projectRoutes from "./routes/projects.js";
+import cartRoutes from "./routes/cart.js";
+import orderRoutes from "./routes/orders.js";
+import profileRoutes from "./routes/profile.js";
 
-module.exports = app;
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/profile", profileRoutes);
+
+export default app;

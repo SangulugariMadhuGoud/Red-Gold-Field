@@ -1,15 +1,15 @@
 // OrderItem model - defines the database schema for individual order items
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const orderItemSchema = new mongoose.Schema({
   orderId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Order',
+    ref: "Order",
     required: true,
   },
   productId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
+    ref: "Product",
     required: true,
   },
   productName: {
@@ -26,4 +26,4 @@ const orderItemSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('OrderItem', orderItemSchema);
+export default mongoose.model("OrderItem", orderItemSchema);

@@ -1,5 +1,5 @@
 // Product model - defines the database schema for product data
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
   slug: {
@@ -40,4 +40,4 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Product', productSchema);
+export default mongoose.model("Product", productSchema);

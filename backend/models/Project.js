@@ -1,7 +1,7 @@
 // Project model - defines the database schema for investment projects
-const mongoose = require('mongoose');
+import { Schema, model } from "mongoose";
 
-const projectSchema = new mongoose.Schema({
+const projectSchema = new Schema({
   slug: {
     type: String,
     required: true,
@@ -22,8 +22,8 @@ const projectSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['open', 'limited', 'coming-soon'],
-    default: 'coming-soon',
+    enum: ["open", "limited", "coming-soon"],
+    default: "coming-soon",
   },
   tag: {
     type: String,
@@ -63,4 +63,4 @@ const projectSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Project', projectSchema);
+export default model("Project", projectSchema);

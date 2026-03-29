@@ -1,9 +1,7 @@
 // Authentication controller - handles request/response logic for auth endpoints
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { validationResult } = require("express-validator");
-const User = require("../models/User");
-const authService = require("../services/authService");
+import { validationResult } from "express-validator";
+import User from "../models/User.js";
+import authService from "../services/authService.js";
 
 const authController = {
   // Register
@@ -34,9 +32,7 @@ const authController = {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { email, password } = req.body;
-
     try {
       const result = await authService.login(email, password);
       res.json(result);
@@ -114,4 +110,4 @@ const authController = {
   },
 };
 
-module.exports = authController;
+export default authController;

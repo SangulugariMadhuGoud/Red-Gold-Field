@@ -1,23 +1,34 @@
-// Database connection configuration
-const mongoose = require('mongoose');
+// config/db.js
+import mongoose from "mongoose";
+import env from "../config/env.js";
 
 const connectDB = async () => {
   try {
-    const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/rgf';
+    const mongodbUri =
+      env.MONGODB_URI || "mongodb://127.0.0.1:27017/rgf";
 
-    await mongoose.connect(mongodbUri, {
+    const conn = await mongoose.connect(mongodbUri, {
       serverSelectionTimeoutMS: 5000,
     });
 
-    console.log('MongoDB connected');
+    console.log(`MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    console.error("MongoDB connection error:", error.message);
     process.exit(1);
   }
 };
 
-mongoose.connection.on('connected', () => console.log('Mongoose connected to cluster'));
-mongoose.connection.on('error', (err) => console.error('Mongoose connection error:', err));
-mongoose.connection.on('disconnected', () => console.warn('Mongoose disconnected'));
+// 🔥 Correct way to listen to events
+mongoose.connection.on("connected", () => {
+  console.log("Mongoose connected to DB");
+});
 
-module.exports = connectDB;
+mongoose.connection.on("error", (err) => {
+  console.error("Mongoose error:", err.message);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.warn("Mongoose disconnected");
+});
+
+export default connectDB;
