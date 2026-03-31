@@ -7,7 +7,7 @@ export const authAPI = {
 
   getCurrentUser: () => api.get("/public/auth/me"),
 
-  refreshToken: () => api.get("/public/auth/refresh"),
+  refresh: () => api.post("/public/auth/refresh"),
 
   logout: () => api.post("/public/auth/logout"),
 
@@ -15,4 +15,16 @@ export const authAPI = {
 
   verifyOtp: (phone, otp) =>
     api.post("/public/auth/verify-otp", { phone, otp }),
+
+  forgotPassword: (email) =>
+    api.post("/public/auth/forgot-password", { email }),
+
+  verifyResetOtp: (email, otp) =>
+    api.post("/public/auth/verify-reset-otp", { email, otp }),
+
+  resetPassword: (newPassword) =>
+    api.post("/public/auth/reset-password", { newPassword }),
+
+  googleLogin: () =>
+    (window.location.href = "http://localhost:5000/api/public/auth/google"),
 };
