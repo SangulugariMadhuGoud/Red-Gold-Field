@@ -18,6 +18,12 @@ const env = {
 
   JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || "15m",
   JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "7d",
+
+  CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5173",
+
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  EMAIL_FROM: process.env.EMAIL_FROM || "onboarding@resend.dev",
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL || "admin@yourdomain.com",
 };
 
 export default Object.freeze(env);

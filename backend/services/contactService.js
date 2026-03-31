@@ -1,6 +1,6 @@
 // Contact service - handles contact form operations
 import Contact from "../models/Contact.js";
-import transporter from "../utils/emailTransporter.js";
+import sendEmail from "../utils/emailService.js";
 
 const saveContact = async (data) => {
   const contact = new Contact(data);
@@ -24,8 +24,7 @@ const deleteContact = async (id) => {
 };
 
 const sendAdminNotificationEmail = async (data) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  await sendEmail({
     to: process.env.ADMIN_EMAIL,
     subject: `New Contact Form Submission — ${data.name}`,
     html: `
@@ -36,13 +35,11 @@ const sendAdminNotificationEmail = async (data) => {
       <p><strong>Message:</strong> ${data.message || "No message provided"}</p>
       <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
     `,
-  };
-  await transporter.sendMail(mailOptions);
+  });
 };
 
 const sendAutoReplyEmail = async (data) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  await sendEmail({
     to: data.email,
     subject: "We received your message — Red Gold Fields",
     html: `
@@ -53,8 +50,7 @@ const sendAutoReplyEmail = async (data) => {
       <p>${data.message || "No message provided"}</p>
       <p>Best regards,<br>Red Gold Fields Team</p>
     `,
-  };
-  await transporter.sendMail(mailOptions);
+  });
 };
 
 export default {

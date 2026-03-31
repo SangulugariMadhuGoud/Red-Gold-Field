@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function () {
+      return this.authProvider === "local";
+    },
   },
   fullName: {
     type: String,
@@ -26,8 +28,25 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  },
   refreshToken: {
     type: String,
+  },
+  googleId: {
+    type: String,
+    sparse: true,
+    unique: true,
+  },
+  photo: {
+    type: String,
+  },
+  authProvider: {
+    type: String,
+    enum: ["local", "google"],
+    default: "local",
   },
   createdAt: {
     type: Date,

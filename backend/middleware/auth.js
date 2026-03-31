@@ -3,16 +3,13 @@ import env from "../config/env.js";
 import jwt from "jsonwebtoken";
 
 const auth = (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const token = req.cookies.accessToken;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
 
   try {
-    const decoded = jwt.verify(
-      token,
-      env.JWT_SECRET || "your-secret-key",
-    );
+    const decoded = jwt.verify(token, env.JWT_SECRET || "your-secret-key");
     req.user = decoded;
     next();
   } catch (error) {

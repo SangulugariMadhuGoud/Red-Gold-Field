@@ -1,6 +1,6 @@
 // Public site visit routes
 import express from "express";
-import siteVisitController from "../controllers/siteVisitController";
+import siteVisitController from "../controllers/siteVisitController.js";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 // Site visit service - handles site visit form operations
 import SiteVisit from "../models/SiteVisit.js";
-import transporter from "../utils/emailTransporter.js";
+import sendEmail from "../utils/emailService.js";
 
 const saveSiteVisit = async (data) => {
   const siteVisit = new SiteVisit(data);
@@ -24,8 +24,7 @@ const deleteSiteVisit = async (id) => {
 };
 
 const sendAdminSiteVisitEmail = async (data) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  await sendEmail({
     to: process.env.ADMIN_EMAIL,
     subject: `New Site Visit Request — ${data.name} — ${data.project}`,
     html: `
@@ -38,13 +37,11 @@ const sendAdminSiteVisitEmail = async (data) => {
       <p><strong>Notes:</strong> ${data.message || "No notes provided"}</p>
       <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
     `,
-  };
-  await transporter.sendMail(mailOptions);
+  });
 };
 
 const sendVisitConfirmationEmail = async (data) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  await sendEmail({
     to: data.email,
     subject: "Your Site Visit Request — Red Gold Fields",
     html: `
@@ -53,8 +50,7 @@ const sendVisitConfirmationEmail = async (data) => {
       <p>We have received your site visit request for ${data.project}. Our team will call you within 24 hours to confirm a suitable date.</p>
       <p>Best regards,<br>Red Gold Fields Team</p>
     `,
-  };
-  await transporter.sendMail(mailOptions);
+  });
 };
 
 export default {

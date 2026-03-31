@@ -1,10 +1,11 @@
 // Express app setup - configures middleware, routes, and database connection
+import env from "./config/env.js";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import passport from "./config/passport.js";
 import connectDB from "./config/database.js";
 
-dotenv.config();
 
 const app = express();
 
@@ -12,7 +13,14 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: env.CORS_ORIGIN || "http://localhost:5173",
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
+app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
